@@ -1,0 +1,22 @@
+# To run docker compose file: docker compose up -d
+# Starts up a db container and the phoenix app container, shares the #
+# ports so that they can talk to each other
+# https://docs.docker.com/compose/networking/
+# https://docs.docker.com/get-started/08_using_compose/
+services:
+  ember:
+    image: postgres
+    ports:
+      - 127.0.0.1:5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+  phoenix:
+    image: moltres
+    user: merlin
+    command: tail -f /dev/null # keep container running
+    ports:
+      - 127.0.0.1:4000:4000
+    volumes:
+      - ~/dev/merlin/work:/home/merlin/work
